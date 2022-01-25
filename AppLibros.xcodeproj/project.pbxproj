@@ -13,6 +13,14 @@
 		220955DB279C5CBE00509B9C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 220955D9279C5CBE00509B9C /* Main.storyboard */; };
 		220955DD279C5CBF00509B9C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 220955DC279C5CBF00509B9C /* Assets.xcassets */; };
 		220955E0279C5CBF00509B9C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 220955DE279C5CBF00509B9C /* LaunchScreen.storyboard */; };
+		220955E9279C65DB00509B9C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220955E8279C65DB00509B9C /* Utils.swift */; };
+		220955F0279C779400509B9C /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220955EF279C779400509B9C /* TextFieldView.swift */; };
+		225C034F279F232800032583 /* AuthorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225C034E279F232800032583 /* AuthorViewController.swift */; };
+		22BA2CC0279DE3F300443313 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BA2CBF279DE3F300443313 /* DetailsViewController.swift */; };
+		22D1DDA5279C99F300E39EE4 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D1DDA4279C99F300E39EE4 /* SignUpViewController.swift */; };
+		22E63B9E279CB9A200344766 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E63B9D279CB9A200344766 /* HomeViewController.swift */; };
+		22E63BA0279CD32600344766 /* Objects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E63B9F279CD32600344766 /* Objects.swift */; };
+		22E63BA6279CE41000344766 /* LibroTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E63BA5279CE41000344766 /* LibroTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +32,14 @@
 		220955DC279C5CBF00509B9C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		220955DF279C5CBF00509B9C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		220955E1279C5CBF00509B9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		220955E8279C65DB00509B9C /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		220955EF279C779400509B9C /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
+		225C034E279F232800032583 /* AuthorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorViewController.swift; sourceTree = "<group>"; };
+		22BA2CBF279DE3F300443313 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
+		22D1DDA4279C99F300E39EE4 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		22E63B9D279CB9A200344766 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		22E63B9F279CD32600344766 /* Objects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Objects.swift; sourceTree = "<group>"; };
+		22E63BA5279CE41000344766 /* LibroTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibroTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +72,11 @@
 		220955D2279C5CBD00509B9C /* AppLibros */ = {
 			isa = PBXGroup;
 			children = (
+				22D1DDA3279C994C00E39EE4 /* Details */,
+				22D1DDA2279C993700E39EE4 /* Home */,
+				22D1DDA1279C993200E39EE4 /* Signup */,
+				220955EC279C752300509B9C /* Subviews */,
+				220955E7279C65CF00509B9C /* Utils */,
 				220955D3279C5CBE00509B9C /* AppDelegate.swift */,
 				220955D5279C5CBE00509B9C /* SceneDelegate.swift */,
 				220955D7279C5CBE00509B9C /* ViewController.swift */,
@@ -65,6 +86,49 @@
 				220955E1279C5CBF00509B9C /* Info.plist */,
 			);
 			path = AppLibros;
+			sourceTree = "<group>";
+		};
+		220955E7279C65CF00509B9C /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				220955E8279C65DB00509B9C /* Utils.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		220955EC279C752300509B9C /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				220955EF279C779400509B9C /* TextFieldView.swift */,
+				22E63BA5279CE41000344766 /* LibroTableViewCell.swift */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
+		22D1DDA1279C993200E39EE4 /* Signup */ = {
+			isa = PBXGroup;
+			children = (
+				22D1DDA4279C99F300E39EE4 /* SignUpViewController.swift */,
+			);
+			path = Signup;
+			sourceTree = "<group>";
+		};
+		22D1DDA2279C993700E39EE4 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				22E63B9D279CB9A200344766 /* HomeViewController.swift */,
+				22E63B9F279CD32600344766 /* Objects.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		22D1DDA3279C994C00E39EE4 /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				22BA2CBF279DE3F300443313 /* DetailsViewController.swift */,
+				225C034E279F232800032583 /* AuthorViewController.swift */,
+			);
+			path = Details;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,9 +202,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22D1DDA5279C99F300E39EE4 /* SignUpViewController.swift in Sources */,
 				220955D8279C5CBE00509B9C /* ViewController.swift in Sources */,
+				22E63BA6279CE41000344766 /* LibroTableViewCell.swift in Sources */,
+				220955F0279C779400509B9C /* TextFieldView.swift in Sources */,
 				220955D4279C5CBE00509B9C /* AppDelegate.swift in Sources */,
 				220955D6279C5CBE00509B9C /* SceneDelegate.swift in Sources */,
+				22E63BA0279CD32600344766 /* Objects.swift in Sources */,
+				225C034F279F232800032583 /* AuthorViewController.swift in Sources */,
+				22E63B9E279CB9A200344766 /* HomeViewController.swift in Sources */,
+				220955E9279C65DB00509B9C /* Utils.swift in Sources */,
+				22BA2CC0279DE3F300443313 /* DetailsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -54,12 +54,10 @@ class ViewController: UIViewController {
         topText?.addAnchorsAndSize(width: nil, height: 50, left: 25, top: 20, right: 25, bottom: nil, withAnchor: .top, relativeToView: topIcon)
         
         emailView = TextFieldView(frame:CGRect(), titleText: "Correo", placeHolderText: "Ingrese su correo electrónico", iconName: "u", isSecure: false)
-        emailView?.textField?.text = "jesus@gmail.com"
         fieldView?.addSubview(emailView!)
         emailView?.addAnchors(left: 0, top: 15, right: 0, bottom: nil)
         
         passView = TextFieldView(frame: CGRect(), titleText: "Contraseña", placeHolderText: "Ingrese su contraseña", iconName: "p", isSecure: true)
-        passView?.textField?.text = "lol"
         fieldView?.addSubview(passView!)
         passView?.addAnchors(left: 0, top: 20, right: 0, bottom: nil, withAnchor: .top, relativeToView: emailView)
         

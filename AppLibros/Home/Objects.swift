@@ -10,7 +10,7 @@ class Libros{
 }
 
 class Libro{
-    var title : String?
+   /* var title : String?
     var author : String?
     var category : String?
     var imgName : String?
@@ -28,5 +28,13 @@ class Libro{
         self.description = description
         self.imgAuthorName = imgAuthorName
         self.descAuthor = descAuthor
+    }*/
+    
+    //var category : String?
+    var rank : String?
+    
+    init(rank: String){
+       // self.category = category
+        self.rank = rank
     }
 }

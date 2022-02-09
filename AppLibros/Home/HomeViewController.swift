@@ -1,22 +1,157 @@
 import UIKit
 
-class HomeViewController: UIViewController {
+class HomeViewController: UIViewController{
 
     var dismissButton : UIButton?
     var labelWelcome : UILabel?
     var labelName : UILabel?
     var tempView : UIView?
-    var tempLabel : UILabel?
-    var tableView : UITableView?
+    var booksButton : UIButton?
+    var categoriesButton : UIButton?
+    var authorsButton : UIButton?
+    var bookTableView : UITableView?
+    var categoriesView : UIView?
+    var authorsView : UIView?
+    var fantasyButton : UIButton?
+    var loveButton : UIButton?
+    var cookingButton : UIButton?
+    var programmingButton : UIButton?
+    var historyButton : UIButton?
+    var scienceButton : UIButton?
+    var jkrButton : UIButton?
+    var danBrownButton : UIButton?
+    var danielleSteelButton : UIButton?
+    var lewisCarolButton : UIButton?
+    var jamesPattersonButton : UIButton?
     
-    var dataSource : Libros?
+    var swordImage : UIImageView?
+    var wizardHat : UIImageView?
+    var puppiesImage : UIImageView?
+    var puppuesImage2 : UIImageView?
+    var loveImage : UIImageView?
+    var loveImage2 : UIImageView?
+    var cookingImage : UIImageView?
+    var cookingImage2 : UIImageView?
+    var programmingImage : UIImageView?
+    var programmingImage2 : UIImageView?
+    var historyImage : UIImageView?
+    var historyImage2 : UIImageView?
     
+   
+    var bookData = [Work]()
+    //var workData = [Excerpt]()
+    var authorData = [Entry]()
+    var heroStats = [HeroStats]()
+    var descriptionData : Created?
+    
+    var isCategories : Bool?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        getData()
+        fetchDescription()
+        fetchCategory(isWork: false,category: "programming")
+        view.backgroundColor = .systemGray5
         initUI()
     }
+    
+    func fetchDescription(){
+    
+        let urlString = "https://openlibrary.org/works/OL8193508W.json"
+        downloadJSONCDescription(urlString: urlString){
+            data in
+            let lol = data
+        }
+        
+    }
+    
+    func fetchCategory(isWork: Bool, category: String){
+        
+        //var urlString = ""
+
+        if isWork{
+            let urlString = "https://openlibrary.org/authors/\(category)/works.json"
+            downloadJSONAuthor(urlString: urlString){
+                data in
+                self.authorData = data
+            }
+            
+        }else{
+            let urlString = "https://openlibrary.org/subjects/\(category).json"
+            downloadJSONCategories(urlString: urlString){
+                data in
+                self.bookData = data
+            }
+        }
+        
+        
+    }
+    func downloadJSONAuthor(urlString: String,completed: @escaping ([Entry]) -> ()){
+        
+        let url = URL(string: urlString)
+        
+        URLSession.shared.dataTask(with: url!){(data, response, error) in
+            if error == nil{
+                do{
+                    let result = try JSONDecoder().decode(AuthorData.self, from: data!)
+                    DispatchQueue.main.async {
+                        completed(result.entries)
+                        self.bookTableView?.reloadData()
+
+                    }
+                }catch{
+                    print("json error owrks")
+                }
+            }
+            
+        }.resume()
+        
+    }
+
+    
+    func downloadJSONCategories(urlString: String,completed: @escaping ([Work]) -> ()){
+        
+        let url = URL(string: urlString)
+        
+        URLSession.shared.dataTask(with: url!){(data, response, error) in
+            if error == nil{
+                do{
+                    let result = try JSONDecoder().decode(BookFox.self, from: data!)
+                    DispatchQueue.main.async {
+                        completed(result.works)
+                        self.bookTableView?.reloadData()
+
+                    }
+                }catch{
+                    print("json error")
+                }
+            }
+            
+        }.resume()
+        
+    }
+    
+    func downloadJSONCDescription(urlString: String,completed: @escaping (Created) -> ()){
+        
+        let url = URL(string: urlString)
+        
+        URLSession.shared.dataTask(with: url!){(data, response, error) in
+            if error == nil{
+                do{
+                    let result = try JSONDecoder().decode(DescriptionData.self, from: data!)
+                    DispatchQueue.main.async {
+                        completed(result.descriptionDataDescription)
+                        self.bookTableView?.reloadData()
+
+                    }
+                }catch{
+                    print("json error desc")
+                }
+            }
+            
+        }.resume()
+        
+    }
+    
     
     func initUI(){
         
@@ -32,52 +167,331 @@ class HomeViewController: UIViewController {
         labelWelcome?.addAnchorsAndSize(width: nil, height: 50, left: 20, top: 0, right: 20, bottom: nil, withAnchor: .top, relativeToView: dismissButton)
         
         labelName = UILabel()
-        labelName?.font = .boldSystemFont(ofSize: 35)
+        labelName?.font = .boldSystemFont(ofSize: 42)
         labelName?.textColor = UIColor(red: 9/255, green: 21/255, blue: 130/255, alpha: 1)
-        //labelName?.backgroundColor = .red
         labelName?.text = "Jesús"
         view.addSubview(labelName!)
         labelName?.addAnchorsAndSize(width: nil, height: 50, left: 20, top: -20, right: 20, bottom: nil, withAnchor: .top, relativeToView: labelWelcome)
         
         tempView = UIView()
-        tempView?.layer.cornerRadius = 10
+        tempView?.layer.cornerRadius = 0
         tempView?.backgroundColor = UIColor(red: 9/255, green: 21/255, blue: 100/255, alpha: 1)
         view.addSubview(tempView!)
-        tempView?.addAnchorsAndSize(width: nil, height: 50, left: 15, top: 10, right: 15, bottom: nil, withAnchor: .top, relativeToView: labelName)
+        tempView?.addAnchorsAndSize(width: nil, height: 60, left: 0, top: 10, right: 0, bottom: nil, withAnchor: .top, relativeToView: labelName)
         
-        tempLabel = UILabel()
-        tempLabel?.text = "Libros"
-        tempLabel?.textColor = .white
-        tempLabel?.font = .boldSystemFont(ofSize: 25)
-        tempLabel?.textAlignment = .center
-        tempView?.addSubview(tempLabel!)
-        tempLabel?.addAnchorsAndSize(width: nil, height: 50, left: 0, top: 0, right: 0, bottom: 0)
+        booksButton = UIButton()
+        booksButton?.addTarget(self, action: #selector(tapBooks), for: .touchUpInside)
+        booksButton?.setTitle("Libros", for: .normal)
+        booksButton?.titleLabel?.font = .boldSystemFont(ofSize: 21)
+        booksButton?.backgroundColor = .clear
+        tempView?.addSubview(booksButton!)
+        booksButton?.addAnchorsAndSize(width: 130, height: nil, left: 0, top: 0, right: nil, bottom: 0)
         
-        tableView = UITableView()
-        tableView?.delegate = self
-        tableView?.dataSource = self
-        view.addSubview(tableView!)
-        tableView?.addAnchorsAndSize(width: nil, height: nil, left: 20, top: 15, right: 20, bottom: 40, withAnchor: .top, relativeToView: tempView)
+        categoriesButton = UIButton()
+        categoriesButton?.addTarget(self, action: #selector(tapCategories), for: .touchUpInside)
+        categoriesButton?.setTitle("Categorías", for: .normal)
+        categoriesButton?.titleLabel?.font = .boldSystemFont(ofSize: 20)
+        categoriesButton?.backgroundColor = .blue
+        tempView?.addSubview(categoriesButton!)
+        categoriesButton?.addAnchorsAndSize(width: 150, height: nil, left: 0, top: 0, right: nil, bottom: 0,withAnchor: .left, relativeToView: booksButton)
+        
+        authorsButton = UIButton()
+        authorsButton?.addTarget(self, action: #selector(tapAuthors), for: .touchUpInside)
+        authorsButton?.setTitle("Autores", for: .normal)
+        authorsButton?.titleLabel?.font = .boldSystemFont(ofSize: 21)
+        authorsButton?.backgroundColor = .systemTeal
+        tempView?.addSubview(authorsButton!)
+        authorsButton?.addAnchorsAndSize(width: nil, height: nil, left: 0, top: 0, right: 0, bottom: 0, withAnchor: .left, relativeToView: categoriesButton)
+
+        bookTableView = UITableView()
+        bookTableView?.delegate = self
+        bookTableView?.dataSource = self
+        bookTableView?.isHidden = false
+        view.addSubview(bookTableView!)
+        bookTableView?.addAnchorsAndSize(width: nil, height: nil, left: 20, top: 15, right: 20, bottom: 40, withAnchor: .top, relativeToView: tempView)
+        
+        categoriesView = UIView()
+        categoriesView?.isHidden = true
+        categoriesView?.backgroundColor = .white
+        categoriesView?.layer.cornerRadius = 20
+        view.addSubview(categoriesView!)
+        categoriesView?.addAnchorsAndSize(width: 400, height: 2000, left: 25, top: 15, right: 25, bottom: 100, withAnchor: .top, relativeToView: tempView)
+        
+        authorsView = UIView()
+        authorsView?.isHidden = true
+        authorsView?.backgroundColor = .white
+        authorsView?.layer.cornerRadius = 20
+        view.addSubview(authorsView!)
+        authorsView?.addAnchorsAndSize(width: 400, height: 2000, left: 25, top: 15, right: 25, bottom: 30, withAnchor: .top, relativeToView: tempView)
+        
+        fantasyButton = UIButton()
+        fantasyButton?.layer.cornerRadius = 15
+        fantasyButton?.addTarget(self, action: #selector(fantasyPress), for: .touchUpInside)
+        fantasyButton?.setTitle("Fantasy", for: .normal)
+        fantasyButton?.titleLabel?.font = .boldSystemFont(ofSize: 23)
+        fantasyButton?.setTitleColor(.blue, for: .normal)
+        fantasyButton?.backgroundColor = .systemGray4
+        categoriesView?.addSubview(fantasyButton!)
+        fantasyButton?.addAnchorsAndSize(width: 400, height: 70, left: 20, top: 20, right: 20, bottom: nil)
+        
+        
+        wizardHat = UIImageView()
+        wizardHat?.image = UIImage(named: "f")
+        fantasyButton?.addSubview(wizardHat!)
+        wizardHat?.addAnchorsAndSize(width: 40, height: 10, left: 25, top: 10, right: nil, bottom: 10)
+        
+        loveButton = UIButton()
+        loveButton?.layer.cornerRadius = 15
+        loveButton?.addTarget(self, action: #selector(lovePress), for: .touchUpInside)
+        loveButton?.setTitle("Love", for: .normal)
+        loveButton?.titleLabel?.font = .boldSystemFont(ofSize: 23)
+        loveButton?.setTitleColor(.blue, for: .normal)
+        loveButton?.backgroundColor = .systemGray4
+        categoriesView?.addSubview(loveButton!)
+        loveButton?.addAnchorsAndSize(width: 400, height: 70, left: 20, top: 15, right: 20, bottom: nil, withAnchor: .top, relativeToView: fantasyButton)
+        
+
+        loveImage2 = UIImageView()
+        loveImage2?.image = UIImage(named: "love")
+        loveButton?.addSubview(loveImage2!)
+        loveImage2?.addAnchorsAndSize(width: 40, height: 10, left: 25, top: 12, right: nil, bottom: 12)
+        
+        cookingButton = UIButton()
+        cookingButton?.layer.cornerRadius = 15
+        cookingButton?.addTarget(self, action: #selector(cookingPress), for: .touchUpInside)
+        cookingButton?.setTitle("Cooking", for: .normal)
+        cookingButton?.titleLabel?.font = .boldSystemFont(ofSize: 23)
+        cookingButton?.setTitleColor(.blue, for: .normal)
+        cookingButton?.backgroundColor = .systemGray4
+        categoriesView?.addSubview(cookingButton!)
+        cookingButton?.addAnchorsAndSize(width: 400, height: 70, left: 20, top: 15, right: 20, bottom: nil, withAnchor: .top, relativeToView: loveButton)
+ 
+        cookingImage2 = UIImageView()
+        cookingImage2?.image = UIImage(named: "cooking")
+        cookingButton?.addSubview(cookingImage2!)
+        cookingImage2?.addAnchorsAndSize(width: 40, height: 10, left: 25, top: 10, right: nil, bottom: 10)
+        
+        programmingButton = UIButton()
+        programmingButton?.layer.cornerRadius = 15
+        programmingButton?.addTarget(self, action: #selector(programmingPress), for: .touchUpInside)
+        programmingButton?.setTitle("Programming", for: .normal)
+        programmingButton?.titleLabel?.font = .boldSystemFont(ofSize: 23)
+        programmingButton?.setTitleColor(.blue, for: .normal)
+        programmingButton?.backgroundColor = .systemGray4
+        categoriesView?.addSubview(programmingButton!)
+        programmingButton?.addAnchorsAndSize(width: 400, height: 70, left: 20, top: 15, right: 20, bottom: nil, withAnchor: .top, relativeToView: cookingButton)
+        
+
+        
+        programmingImage2 = UIImageView()
+        programmingImage2?.image = UIImage(named: "programming")
+        programmingButton?.addSubview(programmingImage2!)
+        programmingImage2?.addAnchorsAndSize(width: 40, height: 10, left: 25, top: 10, right: nil, bottom: 10)
+        
+        historyButton = UIButton()
+        historyButton?.layer.cornerRadius = 15
+        historyButton?.addTarget(self, action: #selector(historyPress), for: .touchUpInside)
+        historyButton?.setTitle("History", for: .normal)
+        historyButton?.titleLabel?.font = .boldSystemFont(ofSize: 23)
+        historyButton?.setTitleColor(.blue, for: .normal)
+        historyButton?.backgroundColor = .systemGray4
+        categoriesView?.addSubview(historyButton!)
+        historyButton?.addAnchorsAndSize(width: 400, height: 70, left: 20, top: 15, right: 20, bottom: nil, withAnchor: .top, relativeToView: programmingButton)
+        
+        historyImage = UIImageView()
+        historyImage?.image = UIImage(named: "history")
+        historyButton?.addSubview(historyImage!)
+        historyImage?.addAnchorsAndSize(width: 40, height: 10, left: 25, top: 10, right: nil, bottom: 10)
+        
+        scienceButton = UIButton()
+        scienceButton?.layer.cornerRadius = 15
+        scienceButton?.addTarget(self, action: #selector(sciencePress), for: .touchUpInside)
+        scienceButton?.setTitle("Puppies", for: .normal)
+        scienceButton?.titleLabel?.font = .boldSystemFont(ofSize: 23)
+        scienceButton?.setTitleColor(.blue, for: .normal)
+        scienceButton?.backgroundColor = .systemGray4
+        categoriesView?.addSubview(scienceButton!)
+        scienceButton?.addAnchorsAndSize(width: 400, height: 70, left: 20, top: 15, right: 20, bottom: nil, withAnchor: .top, relativeToView: historyButton)
+        
+        puppiesImage = UIImageView()
+        puppiesImage?.image = UIImage(named: "puppies")
+        scienceButton?.addSubview(puppiesImage!)
+        puppiesImage?.addAnchorsAndSize(width: 40, height: 10, left: 25, top: 10, right: nil, bottom: 10)
+        
+        
+        jkrButton = UIButton()
+        jkrButton?.layer.cornerRadius = 15
+        jkrButton?.addTarget(self, action: #selector(jkrPress), for: .touchUpInside)
+        jkrButton?.backgroundColor = .systemGray3
+        jkrButton?.setTitle("JK Rowling", for: .normal)
+        jkrButton?.setTitleColor(.systemCyan, for: .normal)
+        jkrButton?.titleLabel?.font = .boldSystemFont(ofSize: 23)
+        authorsView?.addSubview(jkrButton!)
+        jkrButton?.addAnchorsAndSize(width: 400, height: 70, left: 20, top: 20, right: 20, bottom: nil)
+        
+        danBrownButton = UIButton()
+        danBrownButton?.layer.cornerRadius = 15
+        danBrownButton?.addTarget(self, action: #selector(danBrownPress), for: .touchUpInside)
+        danBrownButton?.backgroundColor = .systemGray3
+        danBrownButton?.setTitle("Dan Brown", for: .normal)
+        danBrownButton?.setTitleColor(.systemCyan, for: .normal)
+        danBrownButton?.titleLabel?.font = .boldSystemFont(ofSize: 23)
+        authorsView?.addSubview(danBrownButton!)
+        danBrownButton?.addAnchorsAndSize(width: 400, height: 70, left: 20, top: 15, right: 20, bottom: nil, withAnchor: .top, relativeToView: jkrButton)
+        
+        danielleSteelButton = UIButton()
+        danielleSteelButton?.layer.cornerRadius = 15
+        danielleSteelButton?.addTarget(self, action: #selector(danielleSteelPress), for: .touchUpInside)
+        danielleSteelButton?.backgroundColor = .systemGray3
+        danielleSteelButton?.setTitle("Danielle Steel", for: .normal)
+        danielleSteelButton?.setTitleColor(.systemCyan, for: .normal)
+        danielleSteelButton?.titleLabel?.font = .boldSystemFont(ofSize: 23)
+        authorsView?.addSubview(danielleSteelButton!)
+        danielleSteelButton?.addAnchorsAndSize(width: 400, height: 70, left: 20, top: 15, right: 20, bottom: nil, withAnchor: .top, relativeToView: danBrownButton)
+        
+        jamesPattersonButton = UIButton()
+        jamesPattersonButton?.layer.cornerRadius = 15
+        jamesPattersonButton?.addTarget(self, action: #selector(jamesPattersonPress), for: .touchUpInside)
+        jamesPattersonButton?.backgroundColor = .systemGray3
+        jamesPattersonButton?.setTitle("James Patterson", for: .normal)
+        jamesPattersonButton?.setTitleColor(.systemCyan, for: .normal)
+        jamesPattersonButton?.titleLabel?.font = .boldSystemFont(ofSize: 23)
+        authorsView?.addSubview(jamesPattersonButton!)
+        jamesPattersonButton?.addAnchorsAndSize(width: 400, height: 70, left: 20, top: 15, right: 20, bottom: nil, withAnchor: .top, relativeToView: danielleSteelButton)
+        
+        lewisCarolButton = UIButton()
+        lewisCarolButton?.layer.cornerRadius = 15
+        lewisCarolButton?.addTarget(self, action: #selector(lewisCarolPress), for: .touchUpInside)
+        lewisCarolButton?.backgroundColor = .systemGray3
+        lewisCarolButton?.setTitle("Lewis Carol", for: .normal)
+        lewisCarolButton?.setTitleColor(.systemCyan, for: .normal)
+        lewisCarolButton?.titleLabel?.font = .boldSystemFont(ofSize: 23)
+        authorsView?.addSubview(lewisCarolButton!)
+        lewisCarolButton?.addAnchorsAndSize(width: 400, height: 70, left: 20, top: 15, right: 20, bottom: nil, withAnchor: .top, relativeToView: jamesPattersonButton)
+    
+
     }
     
-    func getData(){
-        // MARK: Libro
-        let teahouseParty = Libro(title: "The Teahouse Party", author: "Ellis Avery", category: "Literatura", imgName: "teahouse", rating: "rating5", description: "La historia de dos mujeres cuyas vidas se cruzan en el Japón de finales del siglo XIX, esta novela es también un retrato de Japón que abre sus puertas a Occidente. Contado a través de la encantadora voz de Aurelia, una huérfana estadounidense adoptada por los propietarios de una escuela de ceremonia del té, este libro es 'historia de amor, historia imaginativa y bildungsroman a partes iguales'.", imgAuthorName: "ellis", descAuthor: "Ellis Avery fue un escritor estadounidense. Ganó dos premios Stonewall Book, uno en 2008 por su novela debut The Teahouse Fire y otro en 2013 por su segunda novela The Last Nude.")
-        let lightFell = Libro(title: "Light Fell", author: "Eevan Fallenberg", category: "Ficción", imgName: "lightfell", rating: "rating4", description: "La vida de los chicos ha tomado caminos muy variados. Mientras que algunos se han vuelto extremadamente religiosos, otros son completamente cosmopolitas y seculares, y sus sentimientos hacia su padre van desde la aceptación hasta el amargo resentimiento. Mientras se preparan para este reencuentro, Joseph, sus hijos e incluso Rebecca deben confrontar lo que fue, lo que es y lo que podría haber sido.", imgAuthorName: "eevan", descAuthor: "Evan Fallenberg es nativo de Cleveland, Ohio, y desde 1985 vive en Israel, donde es escritor, profesor y traductor. Sus traducciones recientes incluyen novelas de Batya Gur y Meir Shalev. Se graduó de la Escuela de Servicio Exterior de la Universidad de Georgetown y del programa MFA de Vermont College. Es padre de dos hijos.")
-        let desertBoys = Libro(title: "Desert boys", author: "Chris McCormick", category: "Ficción", imgName: "desertboys", rating: "rating3", description: "Desert Boys es un conjunto de historias entrelazadas que unen la vida del protagonista Daley 'Kush' Kushner a través de su tensa relación con su ciudad natal de la infancia en las afueras del desierto del condado de Los Ángeles.", imgAuthorName: "chris", descAuthor: "Chris McCormick es autor de una novela, The Gimmicks (Harper, 2020), una selección de editores del New York Times, y una colección de cuentos, Desert Boys, ganadora del Stonewall Book Award 2017—Barbara Gittings Literature Award. Sus ensayos e historias han aparecido en The Atlantic, Los Angeles Times, Tin House y Ploughshares.")
-        let spin = Libro(title: "Spin", author: "Robert Wilson", category: "Ciencia ficción", imgName: "spin", rating: "rating4", description: "Una noche de octubre, cuando tenía diez años, Tyler Dupree se paró en su patio trasero y vio apagarse las estrellas. Todos brillaron a la vez, luego desaparecieron, reemplazados por una barrera negra plana y vacía. Él y sus mejores amigos, Jason y Diane Lawton, habían visto lo que se conoció como el Gran Apagón. Daría forma a sus vidas.", imgAuthorName: "robert", descAuthor: "Robert Charles Wilson, es un autor canadiense de ciencia ficción. Wilson nació en el estado norteamericano de California, pero creció y ha pasado casi toda su vida en Canadá, adquiriendo la nacionalidad en 2007. Publicó por primera vez en la revista Analog Science Fiction, firmando con el pseudónimo Bob Chuck Wilson.")
-        let three = Libro(title: "The three body problem", author: "Cixin Liu", category: "Ciencia ficción", imgName: "three", rating: "rating5", description: "La novela de apertura de la trilogía de Cixin Liu sobre el primer contacto con extraterrestres y la lucha clandestina con ellos sobre el futuro de la Tierra y su progreso científico en particular.", imgAuthorName: "cixin", descAuthor: "Liú Cíxīn, es un escritor chino de ciencia ficción, ganador en nueve oportunidades del premio Galaxy y una vez del premio Xingyun (Nébula), y está considerado como uno de los más prolíficos y reconocidos escritores del género en China.")
-        let redQueen = Libro(title: "Red Queen", author: "Victoria Aveyard", category: "Romance", imgName: "redQueen", rating: "rating4", description: "El mundo de Mare Barrow está dividido por la sangre: los que tienen rojo y los que tienen plata. Mare y su familia son rojos humildes, destinados a servir a la élite plateada cuyas habilidades sobrenaturales los hacen casi dioses. Mare roba lo que puede para ayudar a su familia a sobrevivir, pero cuando su mejor amigo es reclutado por el ejército, lo juega todo para ganar su libertad. Un giro del destino la lleva al propio palacio real, donde, frente al rey y todos sus nobles, descubre un poder propio, una habilidad que no sabía que tenía. Excepto que su sangre es roja.", imgAuthorName: "victoria", descAuthor: "Victoria Aveyard es una escritora estadounidense de ficción y guiones para jóvenes adultos y fantasía. Es conocida por su novela de fantasía Red Queen. Aveyard escribió la novela un año después de graduarse del programa de escritura de guiones de la Universidad del Sur de California en 2012")
-        let cell = Libro(title: "Cell", author: "Stephen King", category: "Suspenso", imgName: "cell", rating: "rating5", description: "El 1 de octubre, Dios está en Su cielo, la bolsa de valores se sitúa en 10.140, la mayoría de los aviones llegan a tiempo y Clayton Riddell, un artista de Maine, está casi saltando por Boylston Street en Boston. Acaba de conseguir un contrato de cómics que finalmente podría permitirle mantener a su familia haciendo arte en lugar de enseñarlo. Ya compró un pequeño (¡pero caro!) regalo para su sufrida esposa, y sabe exactamente lo que obtendrá para su hijo Johnny. ¿Por qué no un pequeño regalo para él? Clay se siente bien con el futuro.", imgAuthorName: "stephen", descAuthor: "Stephen Edwin King (nacido el 21 de septiembre de 1947) es un autor estadounidense de novelas de terror, ficción sobrenatural, suspenso, crimen, ciencia ficción y fantasía. Sus libros han vendido más de 350 millones de copias y muchos han sido adaptados a películas, series de televisión, miniseries y cómics. King ha publicado 63 novelas, incluidas siete bajo el seudónimo de Richard Bachman, y cinco libros de no ficción.")
-        let risingStorm = Libro(title: "Rising storm", author: "Erin Hunter", category: "Fantasia", imgName: "risingStorm", rating: "3", description: "Corazón de Fuego, el gato guerrero, se enfrenta a muchos desafíos en su nuevo papel de ayudante del Clan del Trueno, ya que su aprendiz, Zarpa Nublada, se resiste a seguir el código guerrero, Estrella Azul se debilita y Garra de Tigre sigue rondando por el bosque en busca de venganza.", imgAuthorName: "erin", descAuthor: "Erin Hunter es un colectivo de escritores formado por Victoria Holmes, Kate Cary, Cherith Baldry, Inbali Iserles, Tui T. Sutherland, Kasey Widhalm y Rosie Best, especializado en novelas juveniles y de fantasía, con la participación de animales en sus historias.​")
-        
-        // MARK: Libros
-        let libros = Libros(libros: [teahouseParty, lightFell, desertBoys, spin, three, redQueen, cell, risingStorm])
-        dataSource = libros
+    @objc func fantasyPress(){
+        isCategories = true
+        fetchCategory(isWork: false, category: "fantasy")
+        categoriesView?.isHidden = true
+        bookTableView?.isHidden = false
+        authorsView?.isHidden = true
     }
+    
+    @objc func lovePress(){
+        isCategories = true
+        fetchCategory(isWork: false, category: "love")
+        categoriesView?.isHidden = true
+        bookTableView?.isHidden = false
+        authorsView?.isHidden = true
+
+    }
+    
+    @objc func cookingPress(){
+        isCategories = true
+        fetchCategory(isWork: false, category: "cooking")
+        categoriesView?.isHidden = true
+        bookTableView?.isHidden = false
+        authorsView?.isHidden = true
+
+    }
+    
+    @objc func programmingPress(){
+        isCategories = true
+        fetchCategory(isWork: false, category: "programming")
+        categoriesView?.isHidden = true
+        bookTableView?.isHidden = false
+        authorsView?.isHidden = true
+
+    }
+    
+    @objc func historyPress(){
+        isCategories = true
+        fetchCategory(isWork: false, category: "history")
+        categoriesView?.isHidden = true
+        bookTableView?.isHidden = false
+        authorsView?.isHidden = true
+        
+    }
+    
+    @objc func sciencePress(){
+        isCategories = true
+        fetchCategory(isWork: false, category: "puppies")
+        categoriesView?.isHidden = true
+        bookTableView?.isHidden = false
+        authorsView?.isHidden = true
+    }
+    
+    @objc func jkrPress(){
+        isCategories = false
+        fetchCategory(isWork: true, category: "OL23919A"/*"OL23919A"*/)
+        authorsView?.isHidden = true
+        categoriesView?.isHidden = true
+        bookTableView?.isHidden = false
+    }
+    
+    @objc func danBrownPress(){
+        isCategories = false
+        fetchCategory(isWork: true, category: "OL66700A")
+        authorsView?.isHidden = true
+        categoriesView?.isHidden = true
+        bookTableView?.isHidden = false
+    }
+    
+    @objc func danielleSteelPress(){
+        isCategories = false
+        fetchCategory(isWork: true, category: "OL24452A")
+        authorsView?.isHidden = true
+        categoriesView?.isHidden = true
+        bookTableView?.isHidden = false
+    }
+    
+    @objc func lewisCarolPress(){
+        isCategories = false
+        fetchCategory(isWork: true, category: "OL946144A")
+        authorsView?.isHidden = true
+        categoriesView?.isHidden = true
+        bookTableView?.isHidden = false
+    }
+    
+    @objc func jamesPattersonPress(){
+        isCategories = false
+        fetchCategory(isWork: true, category: "OL6812710A")
+        authorsView?.isHidden = true
+        categoriesView?.isHidden = true
+        bookTableView?.isHidden = false
+    }
+    
+    
     
     @objc func dismissHome(){
         dismiss(animated: true)
+    }
+    
+    @objc func tapBooks(){
+        labelName?.textColor = UIColor(red: 9/255, green: 21/255, blue: 130/255, alpha: 1)
+        bookTableView?.reloadData()
+        bookTableView?.isHidden = false
+        categoriesView?.isHidden = true
+        authorsView?.isHidden = true
+    }
+    
+    @objc func tapCategories(){
+        labelName?.textColor = .blue
+        bookTableView?.reloadData()
+        bookTableView?.isHidden = true
+        categoriesView?.isHidden = false
+        authorsView?.isHidden = true
+    }
+    
+    @objc func tapAuthors(){
+        labelName?.textColor = .systemCyan
+        bookTableView?.reloadData()
+        bookTableView?.isHidden = true
+        categoriesView?.isHidden = true
+        authorsView?.isHidden = false
     }
     
 
@@ -86,18 +500,48 @@ class HomeViewController: UIViewController {
 extension HomeViewController : UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return  dataSource?.libros?.count ?? 0
+
+        if isCategories ?? true{
+            return bookData.count
+        }else{
+            return  authorData.count
+        }
         
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let libro = dataSource?.libros?[indexPath.row]
-        let cell = LibroTableViewCell(libro: libro!)
+
+        let cell = LibroTableViewCell()
+        if isCategories ?? true{
+            cell.titleLabel?.text = bookData[indexPath.row].title
+            cell.categoryLabel?.text = bookData[indexPath.row].subject[0]
+            cell.authorLabel?.text = bookData[indexPath.row].authors[0].name
+            let url = URL(string: "https://covers.openlibrary.org/b/ID/\(bookData[indexPath.row].cover_id)-M.jpg")
+                if let data = try? Data(contentsOf: url!)
+                {
+                    cell.icon?.image = UIImage(data: data)!
+                }
+        
+        }else{
+            cell.titleLabel?.text = authorData[indexPath.row].title
+            cell.categoryLabel?.text = authorData[indexPath.row].subjects?[0] ?? ""
+            cell.authorLabel?.text = authorData[indexPath.row].subject_times?[0] ?? ""
+            let url = URL(string: "https://covers.openlibrary.org/b/ID/\(authorData[indexPath.row].covers? [0] ?? 0)-M.jpg")
+                if let data = try? Data(contentsOf: url!)
+                {
+                    cell.icon?.image = UIImage(data: data)!
+                }
+            
+        }
+        
+        //cell.categoryLabel?.text = authorData[indexPath.row].subjects![0]
+        //cell.authorLabel?.text = authorData[indexPath.section].description
+        
         return cell
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 20
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -106,8 +550,26 @@ extension HomeViewController : UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailsVC = DetailsViewController()
-        let libro = dataSource?.libros?[indexPath.row]
-        detailsVC.libro = libro
+        
+        if isCategories ?? true{
+            detailsVC.titleString = bookData[indexPath.row].title
+            detailsVC.authorString = bookData[indexPath.row].authors[0].name
+            detailsVC.categoryString = bookData[indexPath.row].subject[0]
+            detailsVC.imgString = "https://covers.openlibrary.org/b/ID/\(bookData[indexPath.row].cover_id)-M.jpg"
+            detailsVC.descriptionString = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+        }else{
+            detailsVC.titleString = authorData[indexPath.row].title
+            detailsVC.imgString = "https://covers.openlibrary.org/b/ID/\(authorData[indexPath.row].covers? [0] ?? 0)-M.jpg"
+            detailsVC.authorString = authorData[indexPath.row].subject_times?[0] ?? ""
+            detailsVC.categoryString = authorData[indexPath.row].subjects?[0] ?? ""
+            detailsVC.descriptionString = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+        }
+        
+        /*fetchCategory(isWork: true, category: bookData[indexPath.row].key)
+        print(bookData[indexPath.row].key)
+        //detailsVC.descriptionString = workData[1].excerpt
+        print(workData.capacity)*/
+        
         
         present(detailsVC, animated: true, completion: nil)
     }

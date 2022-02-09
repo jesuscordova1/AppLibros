@@ -25,7 +25,6 @@ class AuthorViewController: UIViewController {
         masterView?.addAnchorsAndSize(width: nil, height: 350, left: 35, top: 150, right: 35, bottom: nil)
         
         authorImage = UIImageView()
-        authorImage?.image = UIImage(named: libro?.imgAuthorName ?? "")
         authorImage?.backgroundColor = .red
         authorImage?.layer.cornerRadius = 10
         authorImage?.layer.borderColor = CGColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
@@ -35,7 +34,7 @@ class AuthorViewController: UIViewController {
         authorImage?.addAnchorsAndSize(width: nil, height: 200, left: 100, top: -120, right: 100, bottom: nil)
         
         authorLabel = UILabel()
-        authorLabel?.text = libro?.author
+        authorLabel?.text = ""
         authorLabel?.font = .boldSystemFont(ofSize: 35)
         authorLabel?.textColor = UIColor(red: 9/255, green: 21/255, blue: 130/255, alpha: 1)
         authorLabel?.textAlignment = .center
@@ -45,7 +44,7 @@ class AuthorViewController: UIViewController {
         descriptionLabel = UILabel()
         descriptionLabel?.textAlignment = .center
         descriptionLabel?.numberOfLines = 0
-        descriptionLabel?.text = libro?.descAuthor
+        descriptionLabel?.text = ""
         descriptionLabel?.adjustsFontSizeToFitWidth = true
         masterView?.addSubview(descriptionLabel!)
         descriptionLabel?.addAnchorsAndSize(width: nil, height: nil, left: 25, top: 0, right: 25, bottom: 25, withAnchor: .top, relativeToView: authorLabel)

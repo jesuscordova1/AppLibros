@@ -27,7 +27,7 @@ class SignUpViewController: UIViewController {
         
         topLabel = UILabel()
         topLabel?.numberOfLines = 0
-        topLabel?.text = "¡Prepárate para la mejor experiencia de biblioteca posible!"
+        topLabel?.text = "¡Estas a unos cuantos pasos de vivir la mejor experiencia!"
         topLabel?.textAlignment = .center
         topLabel?.font = .boldSystemFont(ofSize: 20)
         topLabel?.textColor = UIColor(red: 255/255, green: 69/255, blue: 123/255, alpha: 1)
@@ -81,6 +81,7 @@ class SignUpViewController: UIViewController {
     }
 
     @objc func signUpTap(){
+                
         let alertEmpty = UIAlertController(title: "Error", message: "No deje ningún campo vacío", preferredStyle: .alert)
         alertEmpty.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         

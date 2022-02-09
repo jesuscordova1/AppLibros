@@ -16,12 +16,15 @@ class ViewController: UIViewController {
     var width = UIScreen.main.bounds.width
     var height = UIScreen.main.bounds.height
     var backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 255/255, alpha: 1)
+    
+    let nytUrl = "https://api.nytimes.com/svc/books/v3/lists/health.json?api-key=wj99ThkWtkfF7JL4CGBixEjVyYuYK76N"
+    var bookManager = BookManager(rank:0)
 
     override func viewDidLoad() {
         initUI()
         super.viewDidLoad()
         view.backgroundColor = .white
-        
+        bookManager.request(urlString: nytUrl)
     }
 
     func initUI(){
@@ -54,10 +57,12 @@ class ViewController: UIViewController {
         topText?.addAnchorsAndSize(width: nil, height: 50, left: 25, top: 20, right: 25, bottom: nil, withAnchor: .top, relativeToView: topIcon)
         
         emailView = TextFieldView(frame:CGRect(), titleText: "Correo", placeHolderText: "Ingrese su correo electrónico", iconName: "u", isSecure: false)
+        emailView?.textField?.text = "jesus@gmail.com"
         fieldView?.addSubview(emailView!)
         emailView?.addAnchors(left: 0, top: 15, right: 0, bottom: nil)
         
         passView = TextFieldView(frame: CGRect(), titleText: "Contraseña", placeHolderText: "Ingrese su contraseña", iconName: "p", isSecure: true)
+        passView?.textField?.text = "lol"
         fieldView?.addSubview(passView!)
         passView?.addAnchors(left: 0, top: 20, right: 0, bottom: nil, withAnchor: .top, relativeToView: emailView)
         
